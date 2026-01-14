@@ -14,7 +14,7 @@ Display your YouTube Music activity on Discord.
 - [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) v18+, [pnpm](https://pnpm.io/)
 - Discord desktop app (or Vencord)
 - Chromium based web browser
-> **Tip:** Update to the **latest** version, risk 0 isn't a thing !
+> **Tip:** Update to the **latest** stable release, risk 0 isn't a thing !
 
 ## Setup
 
@@ -29,6 +29,7 @@ Choose **one** of the two options below:
 No separate server needed! The plugin runs inside Discord.
 
 **Requirements:** [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) v18+, [pnpm](https://pnpm.io/)
+> **Tip:** As previously said, update to the **latest** stable release, risk 0 will never exist!
 
 > **Note:** Custom plugins require building Vencord from source. See the [official guide](https://docs.vencord.dev/installing/).
 
