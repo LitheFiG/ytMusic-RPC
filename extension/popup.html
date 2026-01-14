@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #808080;
+            --accent-red: #ff0000;
+            --border-color: #1a1a1a;
+            --hover-bg: #141414;
+        }
+
+        body {
+            width: 340px;
+            font-family: 'JetBrains Mono', 'Space Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, var(--border-color) 1px, transparent 1px);
+            background-size: 15px 15px;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+            animation: scanline 3s infinite;
+        }
+
+        @keyframes scanline {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .status-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-dot.connected {
+            background: #23a559;
+            box-shadow: 0 0 8px rgba(35, 165, 89, 0.6);
+            animation: pulse-green 2s infinite;
+        }
+
+        .status-dot.disconnected {
+            background: var(--accent-red);
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .status-text {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .music-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .music-card-header {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--accent-red);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .music-info {
+            display: flex;
+            gap: 15px;
+        }
+
+        .music-thumbnail {
+            width: 70px;
+            height: 70px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .music-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%);
+        }
+
+        .music-details {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .music-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .music-artist {
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 8px;
+        }
+
+        .music-status {
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .music-status.playing {
+            color: #23a559;
+        }
+
+        .music-status.paused {
+            color: var(--accent-red);
+        }
+
+        .no-music {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 30px 15px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .no-music-icon {
+            width: 40px;
+            height: 40px;
+            fill: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .no-music-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+
+        .link-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .link-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-red);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .link-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .link-item:hover {
+            background: var(--hover-bg);
+            border-color: var(--text-secondary);
+            transform: translateX(3px);
+        }
+
+        .link-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-primary);
+            flex-shrink: 0;
+        }
+
+        .link-content {
+            flex: 1;
+        }
+
+        .link-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .link-arrow {
+            width: 12px;
+            height: 12px;
+            fill: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .link-item:hover .link-arrow {
+            transform: translateX(3px);
+            fill: var(--text-primary);
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-text {
+            font-size: 10px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .footer-link {
+            color: var(--accent-red);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--text-primary);
+        }
+
+        .version {
+            font-size: 9px;
+            color: var(--border-color);
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="header-title">YTM_RPC</h1>
+            <p class="header-subtitle">YouTube Music Discord Presence</p>
+        </div>
+
+        <div id="statusCard" class="status-card">
+            <div id="statusDot" class="status-dot disconnected"></div>
+            <span id="statusText" class="status-text">CHECKING CONNECTION...</span>
+        </div>
+
+        <div id="musicCard" class="music-card hidden">
+            <div class="music-card-header">Now Playing</div>
+            <div class="music-info">
+                <div class="music-thumbnail">
+                    <img id="musicThumbnail" src="" alt="">
+                </div>
+                <div class="music-details">
+                    <div class="music-title" id="musicTitle">Song Title</div>
+                    <div class="music-artist" id="musicArtist">Artist</div>
+                    <div class="music-status" id="musicStatus">
+                        <span>Playing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="noMusic" class="no-music hidden">
+            <svg class="no-music-icon" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            <p class="no-music-text">Play something on YouTube Music<br>to display your activity</p>
+        </div>
+
+        <a href="#" class="link-item" id="openYTMBtn">
+            <svg class="link-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <div class="link-content">
+                <div class="link-title">Open YouTube Music</div>
+            </div>
+            <svg class="link-arrow" viewBox="0 0 24 24"><path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/></svg>
+        </a>
+
+        <a href="#" class="link-item" id="githubLink">
+            <svg class="link-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <div class="link-content">
+                <div class="link-title">GitHub Repository</div>
+            </div>
+            <svg class="link-arrow" viewBox="0 0 24 24"><path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/></svg>
+        </a>
+
+        <div class="footer">
+            <p class="footer-text">MADE BY <a href="https://louchat.neurallab.ovh/" class="footer-link" id="creatorLink">LOUCHAT</a></p>
+            <p class="version">V2.1.0</p>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

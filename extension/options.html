@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>YTM Discord RPC - Settings</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1e1f22;
+      color: #dbdee1;
+      padding: 40px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 { color: #fff; margin-bottom: 8px; }
+    p { color: #949ba4; margin-bottom: 24px; }
+    .card {
+      background: #2b2d31;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .card h3 { color: #fff; margin-bottom: 12px; }
+    code {
+      background: #1e1f22;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    pre {
+      background: #1e1f22;
+      padding: 16px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    .status { margin-top: 20px; }
+    .status-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dot.green { background: #23a559; }
+    .dot.red { background: #f23f43; }
+    a { color: #00a8fc; }
+  </style>
+</head>
+<body>
+  <h1>YTM Discord RPC</h1>
+  <p>Settings are configured via config.json file</p>
+
+  <div class="card">
+    <h3>Configuration File</h3>
+    <p>Edit <code>extension/config.json</code> with your Discord Client ID:</p>
+    <pre>{
+  "client_id": "YOUR_CLIENT_ID_HERE",
+  "client_secret": ""
+}</pre>
+    <p style="margin-top: 12px; margin-bottom: 0;">After editing, reload the extension in <code>chrome://extensions/</code></p>
+  </div>
+
+  <div class="card">
+    <h3>Current Status</h3>
+    <div class="status">
+      <div class="status-row">
+        <div id="configDot" class="dot red"></div>
+        <span id="configStatus">Checking...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>How to get a Client ID</h3>
+    <ol style="line-height: 1.8; color: #b5bac1;">
+      <li>Go to <a href="https://discord.com/developers/applications" target="_blank">Discord Developer Portal</a></li>
+      <li>Click "New Application" and give it a name</li>
+      <li>Copy the "Application ID" - this is your Client ID</li>
+      <li>Paste it in config.json</li>
+    </ol>
+  </div>
+
+  <script>
+    async function checkConfig() {
+      try {
+        const response = await chrome.runtime.sendMessage({ type: 'GET_CONFIG' });
+        const dot = document.getElementById('configDot');
+        const status = document.getElementById('configStatus');
+
+        if (response && response.clientId) {
+          dot.className = 'dot green';
+          status.textContent = 'Client ID configured: ' + response.clientId.substring(0, 8) + '...';
+        } else {
+          dot.className = 'dot red';
+          status.textContent = 'No Client ID configured';
+        }
+      } catch (e) {
+        document.getElementById('configStatus').textContent = 'Error: ' + e.message;
+      }
+    }
+    checkConfig();
+  </script>
+</body>
+</html>
