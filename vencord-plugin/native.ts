@@ -4,115 +4,168 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import http from "http";
-import { IpcMainInvokeEvent } from "electron";
+import { Devs } from "@utils/constants";
+import definePlugin, { OptionType, PluginNative } from "@utils/types";
+import { ApplicationAssetUtils, FluxDispatcher } from "@webpack/common";
 
-let httpServer: http.Server | null = null;
-let latestData: any = null;
-let shouldClear = false;
+const Native = VencordNative.pluginHelpers.YTMusicRPC as PluginNative<typeof import("./native")>;
 
-export function startServer(...args: any[]): Promise<{ success: boolean; error?: string }> {
-    console.log("[YTM-RPC Native] startServer called with args:", args.length, args.map(a => typeof a));
+let applicationId = "";
+let pollInterval: ReturnType<typeof setInterval> | null = null;
+let lastDataHash = "";
 
-    let port: number = 8766;
-    for (const arg of args) {
-        if (typeof arg === "number") {
-            port = arg;
-            break;
-        }
+async function getApplicationAsset(key: string): Promise<string> {
+    if (!applicationId) return "";
+    return (await ApplicationAssetUtils.fetchAssetIds(applicationId, [key]))[0];
+}
+
+function setActivity(activity: any | null) {
+    try {
+        FluxDispatcher.dispatch({
+            type: "LOCAL_ACTIVITY_UPDATE",
+            activity: activity,
+            socketId: "YTM-RPC",
+        });
+    } catch (e) {
+        console.error("[YTM-RPC] Failed to set activity:", e);
     }
-    console.log("[YTM-RPC Native] Using port:", port);
+}
 
-    return new Promise((resolve) => {
+async function createActivity(data: any) {
+    if (!applicationId) return null;
+
+    let largeImage: string | undefined;
+    if (data.thumbnail) {
+        let url = data.thumbnail.replace("http://", "https://");
+        if (url.includes("lh3.googleusercontent.com") && !url.includes("-rj")) {
+            url = url.replace(/=w\d+(-h\d+)?/, "=w544-h544-rj");
+        }
         try {
-            if (httpServer) {
-                httpServer.close();
-                httpServer = null;
-            }
-
-            httpServer = http.createServer((req, res) => {
-                res.setHeader("Access-Control-Allow-Origin", "*");
-                res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-                res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-                if (req.method === "OPTIONS") {
-                    res.writeHead(200);
-                    res.end();
-                    return;
-                }
-
-                if (req.method === "POST" && req.url === "/update") {
-                    let body = "";
-                    req.on("data", (chunk) => body += chunk);
-                    req.on("end", () => {
-                        try {
-                            latestData = JSON.parse(body);
-                            shouldClear = false;
-                            console.log("[YTM-RPC] Received update:", latestData.title);
-                            res.writeHead(200, { "Content-Type": "application/json" });
-                            res.end(JSON.stringify({ success: true }));
-                        } catch (e) {
-                            res.writeHead(400);
-                            res.end(JSON.stringify({ error: "Invalid JSON" }));
-                        }
-                    });
-                    return;
-                }
-
-                if (req.method === "POST" && req.url === "/clear") {
-                    latestData = null;
-                    shouldClear = true;
-                    console.log("[YTM-RPC] Received clear");
-                    res.writeHead(200, { "Content-Type": "application/json" });
-                    res.end(JSON.stringify({ success: true }));
-                    return;
-                }
-
-                if (req.method === "GET" && req.url === "/status") {
-                    res.writeHead(200, { "Content-Type": "application/json" });
-                    res.end(JSON.stringify({ connected: true }));
-                    return;
-                }
-
-                res.writeHead(404);
-                res.end("Not found");
-            });
-
-            httpServer.listen(port, "127.0.0.1", () => {
-                console.log(`[YTM-RPC] HTTP server listening on http://127.0.0.1:${port}`);
-                resolve({ success: true });
-            });
-
-            httpServer.on("error", (err: any) => {
-                const errorMsg = `${err.message} (${err.code})`;
-                console.error("[YTM-RPC Native] Server error:", errorMsg);
-                resolve({ success: false, error: errorMsg });
-            });
-        } catch (e: any) {
-            const errorMsg = e?.message || String(e);
-            console.error("[YTM-RPC Native] Failed to start server:", errorMsg);
-            resolve({ success: false, error: errorMsg });
+            largeImage = await getApplicationAsset(url);
+            console.log("[YTM-RPC] Asset ID:", largeImage);
+        } catch {
+            largeImage = url;
         }
-    });
-}
-
-export function stopServer(_event: IpcMainInvokeEvent): void {
-    if (httpServer) {
-        httpServer.close();
-        httpServer = null;
     }
-    latestData = null;
-    shouldClear = false;
+
+    const songUrl = data.url || "https://music.youtube.com";
+
+    const activity: any = {
+        application_id: applicationId,
+        name: "YouTube Music",
+        type: 2,
+        details: data.title?.substring(0, 128) || "Unknown",
+        state: data.artist?.substring(0, 128) || "Unknown Artist",
+        assets: {
+            large_image: largeImage,
+            large_text: data.title || "YouTube Music",
+        },
+    };
+
+    if (!data.isPaused && data.duration > 0) {
+        const now = Date.now();
+        activity.timestamps = {
+            start: Math.floor(now - (data.currentTime * 1000)),
+            end: Math.floor(now + ((data.duration - data.currentTime) * 1000)),
+        };
+    }
+
+    activity.buttons = [
+        { label: "Listen on YouTube Music", url: songUrl },
+        { label: "by : louchat", url: "https://louchat.neurallab.ovh/" }
+    ];
+
+    return activity;
 }
 
-export function getLatestData(_event: IpcMainInvokeEvent): any {
-    const data = latestData;
-    latestData = null;
-    return data;
+function hashData(data: any) {
+    return [
+        data.title,
+        data.artist,
+        data.isPaused,
+        Math.floor(data.currentTime),
+        Math.floor(data.duration),
+        data.url
+    ].join("|");
 }
 
-export function getShouldClear(_event: IpcMainInvokeEvent): boolean {
-    const clear = shouldClear;
-    shouldClear = false;
-    return clear;
+async function pollForUpdates() {
+    try {
+        const shouldClear = await Native.getShouldClear();
+        if (shouldClear) {
+            setActivity(null);
+            lastDataHash = "";
+            return;
+        }
+
+        const data = await Native.getLatestData();
+        if (!data) return;
+
+        const hash = hashData(data);
+        if (hash === lastDataHash) return;
+        lastDataHash = hash;
+
+        const activity = await createActivity(data);
+        setActivity(activity);
+        console.log("[YTM-RPC] Updated:", data.title);
+    } catch (e) {
+        console.error("[YTM-RPC] Poll error:", e);
+    }
 }
+
+export default definePlugin({
+    name: "YTMusicRPC",
+    description: "Display your YouTube Music activity as Discord status. Works with the YTM-RPC browser extension.",
+    authors: [Devs.Ven],
+
+    options: {
+        applicationId: {
+            type: OptionType.STRING,
+            description: "Your Discord Application ID (from Developer Portal)",
+            default: "",
+        },
+        port: {
+            type: OptionType.NUMBER,
+            description: "HTTP port for extension connection",
+            default: 8766,
+        },
+    },
+
+    async start() {
+        const settings = Vencord.Settings.plugins.YTMusicRPC;
+        applicationId = settings?.applicationId || "";
+        const port = settings?.port || 8766;
+
+        if (!applicationId) {
+            console.warn("[YTM-RPC] No Application ID configured! Go to Settings > Plugins > YTMusicRPC");
+            return;
+        }
+
+        console.log("[YTM-RPC] Starting with Application ID:", applicationId);
+
+        if (!Native || !Native.startServer) {
+            console.error("[YTM-RPC] Native module not loaded! Make sure native.ts exists.");
+            return;
+        }
+
+        const result = await Native.startServer(port);
+        if (!result?.success) {
+            console.error("[YTM-RPC] Failed to start HTTP server:", result?.error || "Unknown error");
+            return;
+        }
+
+        pollInterval = setInterval(pollForUpdates, 1000);
+    },
+
+    stop() {
+        console.log("[YTM-RPC] Stopping...");
+
+        if (pollInterval) {
+            clearInterval(pollInterval);
+            pollInterval = null;
+        }
+
+        Native.stopServer();
+        setActivity(null);
+    },
+});
