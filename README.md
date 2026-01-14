@@ -167,6 +167,9 @@ Yes ! More platforms as input and output ! Let's see what the future gives us !
 **Links to song, artist and album on imdb or similar.**
 > Self explainatory.
 
+## Slight Disclaimer
+> Yes, external tools were used to sort the code. It couldnt be that clean if it was me lol.
+
 ## License
 
 GPL 3.0 Licence
