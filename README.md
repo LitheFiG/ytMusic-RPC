@@ -11,8 +11,10 @@ Display your YouTube Music activity on Discord.
 
 ## Requirements
 
+- [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) v18+, [pnpm](https://pnpm.io/)
 - Discord desktop app (or Vencord)
-- Chrome/Edge/Brave browser
+- Chromium based web browser
+> **Tip:** Update to the **latest** version, risk 0 isn't a thing !
 
 ## Setup
 
