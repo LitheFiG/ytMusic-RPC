@@ -85,21 +85,6 @@ pnpm inject
 | Application ID | Your Discord app ID from Developer Portal | (required) |
 | Port | HTTP port for extension connection | 8766 |
 
-## Troubleshooting
-
-### Plugin not showing in list
-- Make sure you rebuilt Vencord (`pnpm build`) after adding the plugin
-- Check that the file is at `src/userplugins/ytmusicRpc/index.ts`
-- Check the console (Ctrl+Shift+I) for errors
-
-### Extension not connecting
-- Make sure the port matches in both plugin settings and extension
-- Check that no other application is using port 8765
-
-### Activity not showing
-- Make sure your Application ID is correct
-- Enable "Display current activity" in Discord Settings → Activity Privacy
-
 ## Updating
 
 When updating the plugin, copy the new files and rebuild:
