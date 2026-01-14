@@ -21,8 +21,8 @@ If you don't have Vencord installed from source yet:
 ```bash
 git clone https://github.com/Vendicated/Vencord
 cd Vencord
-pnpm i
-pnpm build
+pnpm install --frozen-lockfile
+pnpm build --dev
 pnpm inject
 ```
 
