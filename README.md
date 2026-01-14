@@ -16,6 +16,27 @@ The one going to achieve **parity** with spotify rich presence...
 **Vencord plugin**
 > **No server** needs to run in background, it runs directly in discord, using low ram and already existing discord protocols, it assures **stability** and **flawless communication** between the two parts of the software.
 
+## How does that work ?
+
+There are two parts to this program :
+
+**Chromium Extension**
+> Divided in 3 different scripts: content, background and popup, they all have a different purpose :
+> - **content** : Injected in music.youtube.com along with the whole extension, acts as a data retriever, observing DOM and media session changes and collects the data from the music every changes and formats the collected data to json.
+> - **background** : Acts as a bridge between the browser and Vencord, sends updated fetched data via local HTTP to the discord plugin.
+> - **popup** : User interface, shows the current state of the music, connection and possible errors.
+> **Note:** Album art is fetched directly from the YouTube Music page or extracted URLs and no official YouTube Music API is used; DOM extraction + browser network data is the source.
+
+**Vencord Plugin**
+> Uses 2 different scripts: native and index, working together to finalize the data flow :
+> - Hooking into Discord’s internal IPC to update rich presence.
+> - Maintaining local state of most recent metadata from the extension.
+> - Performs smart timestamp synchronization: incrementing elapsed time every second, correctly handling seeking/ads/pauses, resyncing after drift or external state changes.
+> - Uses the extracted data to compute: startTimestamp, endTimestamp, cover art URL, artist & title strings.
+> - Sends one presence update per tick or on state change, respecting Discord’s rate limits (hence the very small delay on the RPC itself)
+> - Vencord leverages internal Rich Presence hooks: similar logic to discord-rpc but native in-process, avoiding external RPC daemons or socket listeners and generates presence that Discord desktop app displays as user activity.
+
+
 ## Requirements
 
 - [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) v18+, [pnpm](https://pnpm.io/)
