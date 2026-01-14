@@ -90,7 +90,7 @@ YTM-RPC/
 
 ### Extension not connecting
 - Make sure Vencord plugin is enabled
-- Check that port 8765 AND 8766 are not in use by another app
+- Check that port 8765 AND **8766** are not in use by another app
 
 ### Discord status not updating
 - Enable "Display current activity" in Discord Settings → Activity Privacy
@@ -103,4 +103,4 @@ YTM-RPC/
 
 ## License
 
-GPL 3.0 Liscence
+GPL 3.0 Licence
