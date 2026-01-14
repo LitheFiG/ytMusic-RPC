@@ -1,12 +1,13 @@
 # YTM-RPC - YouTube Music Discord Rich Presence
 
-Display your YouTube Music activity on Discord using the vencord plugin loader, it lets discord freely interact with the browser extension via HTTP requests, the whole program is made to have little to no delay on the timestamps and on the music transition, althought it waits on ad, it doesnt break and comes right back.
+The one going to achieve parity with spotify rich presence...
 
 ## Features
 
 - Shows current song, artist, and album art on Discord
 - Progress bar with elapsed/remaining time
-- Fast update, clunckless and <sup><sub>kinda</sub></sup> optimized code
+- Smart Timestamp Synchronization
+- Fast update, clunckless and optimized code
 - Vencord plugin (no server required, just vencord, built from source)
 
 ## Requirements
