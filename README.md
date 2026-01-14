@@ -4,14 +4,17 @@ The one going to achieve parity with spotify rich presence...
 
 ## Features
 
-- Shows current song, artist, and album art on Discord
-  > Using precise metadata fetching directly from youtube music and high quality album cover images !
-- Progress bar with elapsed/remaining time
-  > Smart Timestamp Synchronization : The RPC updates playback time every second, freezes instantly on pause, and resyncs to the exact position after seeking or ads, preventing drift and desync common in other YT Music RPCs. A slight delay can sometime be noticed but isnt consistent and is due to both youtube data fetch and discord limitations and desync.
-- Fast updates using clunckless and optimized code
-  > The code tries to run smoothly, no user interaction needed after initial setup and low ram usage.
-- Vencord plugin
-  > No server needs to run in background, it runs directly in discord, using low ram and already existing discord protocols, it assures stability and clunckless communication between the two parts of the projets.
+### Shows current song, artist, and album art on Discord
+Using precise metadata fetching directly from youtube music and high quality album cover images !
+
+### Progress bar with elapsed/remaining time
+Smart Timestamp Synchronization : The RPC updates playback time every second, freezes instantly on pause, and resyncs to the exact position after seeking or ads, preventing drift and desync common in other YT Music RPCs. A slight delay can sometime be noticed but consistent and is due to both youtube data fetch and discord limitations and desyncs.
+
+### Fast updates using clunckless and optimized code
+The code tries to run smoothly, no user interaction needed after initial setup and low ram usage.
+
+### Vencord plugin
+No server needs to run in background, it runs directly in discord, using low ram and already existing discord protocols, it assures stability and flawless communication between the two parts of the software.
 
 ## Requirements
 
