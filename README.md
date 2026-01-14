@@ -138,4 +138,4 @@ YTM-RPC/
 
 ## License
 
-Apache-2.0 License
+GPL 3.0 Liscence
