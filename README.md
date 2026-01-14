@@ -117,6 +117,31 @@ Discord Status  (Goal)       → Output, displays current song, artist, album ar
 - Refresh the YouTube Music page
 - Reload the extension
 
+## Non-Issues !!!
+
+### Album covers not loading.
+Normal behavior when high quality covers aren't available, desision made from accesibility over quantity.
+
+### Small delay (<1s)
+Due to Youtube Music and Discord restrictions, currently trying to find a way around it to match (or surpass) quality with stock discord integrations.
+
+## Progress bar dissapearing on ad/pause
+Intended behavior to avoid desync and loss of precision from Discord auto advancing timestamps.
+
+## Buttons not showing.
+Okay this is an issue, currently working on it, I'm just bad in typescript, sorry, sincerly.
+
+## Future features
+
+### Multi-Platform compatibility
+Yes ! More platforms as input and output ! Let's see what the future gives us !
+
+### Customisable RPC
+Common, wouldn't it be so cool?
+
+### Links to song, artist and album on imdb or similar.
+Self explainatory.
+
 ## License
 
 GPL 3.0 Licence
