@@ -16,9 +16,9 @@ A Vencord plugin that displays your YouTube Music activity on Discord. No separa
 ```bash
 git clone https://github.com/Vendicated/Vencord
 cd Vencord
-git clone https://github.com/Louchatfroff/YTMusic-RPC
+git clone https://github.com/Louchatfroff/ytMusic-RPC
 mkdir -p src\userplugins\YTMusic-RPC
-xcopy "YTmusic-RPC\vencord-plugin" "src\userplugins\YTMusic-RPC" /E /I
+xcopy "YTmusic-RPC\vencord-plugin\ytMusic-RPC" "src\userplugins\ytMusic-RPC" /E /I
 pnpm install --frozen-lockfile
 pnpm build --dev
 pnpm inject
