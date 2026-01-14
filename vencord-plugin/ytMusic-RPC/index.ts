@@ -7,7 +7,6 @@
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType, PluginNative } from "@utils/types";
 import { ApplicationAssetUtils, FluxDispatcher } from "@webpack/common";
-
 export default definePlugin({
     name: "ytMusic-RPC",
     description: "YouTube Music Discord Rich Presence using Vencord and Chromium extension.",
@@ -15,11 +14,10 @@ export default definePlugin({
 });
 
 const Native = VencordNative.pluginHelpers.YTMusicRPC as PluginNative<typeof import("./native")>;
-
 let applicationId = "";
 let pollInterval: ReturnType<typeof setInterval> | null = null;
-let lastDataHash = "";
 
+let lastDataHash = "";
 function hashData(data: any) {
     return [
         data.title,
@@ -50,7 +48,6 @@ function setActivity(activity: any | null) {
 
 async function createActivity(data: any) {
     if (!applicationId) return null;
-
     let largeImage: string | undefined;
     if (data.thumbnail) {
         let url = data.thumbnail.replace("http://", "https://");
@@ -67,7 +64,6 @@ async function createActivity(data: any) {
     }
 
     const songUrl = data.url || "https://music.youtube.com";
-
     const activity: any = {
         application_id: applicationId,
         name: "YouTube Music",
@@ -92,7 +88,7 @@ async function createActivity(data: any) {
         { label: "Listen on YouTube Music", url: songUrl },
         { label: "by : louchat", url: "https://louchat.neurallab.ovh/" }
     ];
-
+    
     return activity;
 }
 
@@ -107,11 +103,9 @@ async function pollForUpdates() {
 
         const data = await Native.getLatestData();
         if (!data) return;
-
         const hash = hashData(data);
         if (hash === lastDataHash) return; // skip if nothing changed
         lastDataHash = hash;
-
         const activity = await createActivity(data);
         setActivity(activity);
         console.log("[YTM-RPC] Updated:", data.title);
@@ -124,7 +118,6 @@ export default definePlugin({
     name: "YTMusicRPC",
     description: "Display your YouTube Music activity as Discord status. Works with the YTM-RPC browser extension.",
     authors: [Devs.Ven],
-
     options: {
         applicationId: {
             type: OptionType.STRING,
@@ -142,14 +135,12 @@ export default definePlugin({
         const settings = Vencord.Settings.plugins.YTMusicRPC;
         applicationId = settings?.applicationId || "";
         const port = settings?.port || 8766;
-
         if (!applicationId) {
             console.warn("[YTM-RPC] No Application ID configured! Go to Settings > Plugins > YTMusicRPC");
             return;
         }
 
         console.log("[YTM-RPC] Starting with Application ID:", applicationId);
-
         if (!Native || !Native.startServer) {
             console.error("[YTM-RPC] Native module not loaded! Make sure native.ts exists.");
             return;
