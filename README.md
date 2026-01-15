@@ -29,7 +29,7 @@ There are two parts to this program :
 > **Note:** Album art is fetched directly from the YouTube Music page or extracted URLs and no official YouTube Music API is used; DOM extraction + browser network data is the source.
 
 **Vencord Plugin**
-> Uses 2 different scripts: native and index, working together to finalize the data flow :
+> Uses 2 different scripts: native and index, working together to :
 > - Hook into Discord’s internal IPC to update rich presence.
 > - Maintain local state of most recent metadata from the extension.
 > - Perform smart timestamp synchronization: incrementing elapsed time every second, correctly handling seeking/ads/pauses, resyncing after drift or external state changes.
