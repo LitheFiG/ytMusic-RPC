@@ -8,7 +8,7 @@ The one going to achieve **parity** with spotify rich presence...
 > Using **precise** metadata fetching directly from youtube music and **high quality** album cover images !
 
 **Progress bar with elapsed/remaining time**
-> Smart Timestamp Synchronization : The RPC updates playback time every second, freezes instantly on pause, and resyncs to the exact position after seeking or ads, **preventing drift and desync** common in other YT Music RPCs. A slight delay can sometime be noticed but it's **never consistent** and is due to both youtube data fetch and discord limitations and **desyncs.
+> Smart Timestamp Synchronization : The RPC updates playback time every second, freezes instantly on pause, and resyncs to the exact position after seeking or ads, **preventing drift and desync** common in other YT Music RPCs. A slight delay can sometime be noticed but it's never consistent and is due to both youtube data fetch and discord limitations and desyncs.
 
 **Fast updates using clunckless and optimized code**
 > The code tries to run **smoothly**, no user interaction needed after initial setup and **low ram usage**.
